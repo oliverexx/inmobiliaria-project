@@ -1,0 +1,23 @@
+inmobiliaria-project/
+├── backend/                 # Django API
+│   ├── config/             # Settings, URLs, WSGI
+│   ├── apps/
+│   │   ├── users/          # Modelo User extendido
+│   │   ├── properties/     # Modelo Property (adaptado de Post)
+│   │   ├── categories/     # Modelo Category
+│   │   └── inquiries/      # Modelo Inquiry (adaptado de Comment)
+│   ├── media/
+│   ├── static/
+│   ├── manage.py
+│   └── requirements.txt
+├── frontend/               # React SPA
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   └── context/
+│   ├── package.json
+│   └── vite.config.js
+├── docker-compose.yml
+├── .env
+└── README.md
