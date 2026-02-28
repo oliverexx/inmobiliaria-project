@@ -61,9 +61,16 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             {/* Content */}
             <div className="p-4">
                 {/* Price */}
-                <p className="text-xl font-bold text-gray-900 mb-1">
-                    {formatPrice(Number(property.price), property.operation)}
-                </p>
+                <div className="flex items-baseline gap-1 mb-1">
+                    <p className="text-xl font-bold text-gray-900">
+                        {formatPrice(Number(property.price), property.operation)}
+                    </p>
+                    {isRent && property.rentalPrices && !property.rentalPrices.longTerm && (
+                        <span className="text-[10px] text-amber-600 font-bold uppercase bg-amber-50 px-1.5 py-0.5 rounded leading-none">
+                            T. Corto
+                        </span>
+                    )}
+                </div>
 
                 {/* Title */}
                 <h3 className="text-sm font-medium text-gray-700 mb-2 line-clamp-1">

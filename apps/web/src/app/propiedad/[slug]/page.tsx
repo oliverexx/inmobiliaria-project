@@ -37,6 +37,7 @@ import {
     PROPERTY_TYPE_LABELS,
     SITE_URL,
     getWhatsAppLink,
+    RENTAL_PERIOD_LABELS,
 } from "@calzada/config";
 
 // ISR
@@ -256,6 +257,48 @@ export default async function PropertyDetailPage({ params }: Props) {
                                 ))}
                             </div>
 
+                            {/* Rental Pricing Table */}
+                            {property.operation === "rent" && property.rentalPrices && (
+                                <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+                                    <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                        <Calendar className="w-5 h-5 text-amber-500" />
+                                        Opciones de Alquiler
+                                    </h2>
+                                    <div className="overflow-hidden rounded-lg border border-gray-100">
+                                        <table className="w-full text-sm text-left">
+                                            <thead className="bg-gray-50 text-gray-500 uppercase text-[10px] font-bold tracking-wider">
+                                                <tr>
+                                                    <th className="px-4 py-3">Tipo de Estadía</th>
+                                                    <th className="px-4 py-3 text-right">Precio</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-gray-100">
+                                                {Object.entries(property.rentalPrices).map(([key, value]) => {
+                                                    if (!value) return null;
+                                                    return (
+                                                        <tr key={key} className="hover:bg-gray-50/50 transition-colors">
+                                                            <td className="px-4 py-3 font-medium text-gray-700 capitalize">
+                                                                {RENTAL_PERIOD_LABELS[key as keyof typeof RENTAL_PERIOD_LABELS] || key}
+                                                            </td>
+                                                            <td className="px-4 py-3 text-right font-bold text-amber-600">
+                                                                {new Intl.NumberFormat("es-AR", {
+                                                                    style: "currency",
+                                                                    currency: "ARS",
+                                                                    maximumFractionDigits: 0,
+                                                                }).format(value)}
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <p className="mt-4 text-xs text-gray-400 italic">
+                                        * Los precios pueden variar según temporada o disponibilidad. Consultar para más detalles.
+                                    </p>
+                                </div>
+                            )}
+
                             {/* Description */}
                             <div className="bg-white rounded-xl p-6 border border-gray-100">
                                 <h2 className="text-lg font-semibold text-gray-900 mb-3">
@@ -346,6 +389,8 @@ export default async function PropertyDetailPage({ params }: Props) {
                                 <InquiryForm
                                     propertyId={property.id}
                                     propertyTitle={property.title}
+                                    operation={property.operation}
+                                    rentalPrices={property.rentalPrices}
                                 />
                             </div>
 

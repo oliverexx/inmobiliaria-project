@@ -114,6 +114,12 @@ export const properties = pgTable(
         viewsCount: integer("views_count").notNull().default(0),
         isFeatured: boolean("is_featured").notNull().default(false),
         isAvailable: boolean("is_available").notNull().default(true),
+        rentalPrices: jsonb("rental_prices").$type<{
+            daily?: number;
+            weekly?: number;
+            monthly?: number;
+            longTerm?: number;
+        }>(),
         metaDescription: varchar("meta_description", { length: 160 }),
         publishedAt: timestamp("published_at"),
         createdAt: timestamp("created_at").defaultNow().notNull(),

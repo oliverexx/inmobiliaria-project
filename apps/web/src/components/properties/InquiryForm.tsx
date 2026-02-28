@@ -7,6 +7,13 @@ import clsx from "clsx";
 interface InquiryFormProps {
     propertyId: number;
     propertyTitle: string;
+    operation: string;
+    rentalPrices?: {
+        daily?: number;
+        weekly?: number;
+        monthly?: number;
+        longTerm?: number;
+    } | null;
 }
 
 type FormStatus = "idle" | "loading" | "success" | "error";
@@ -14,6 +21,8 @@ type FormStatus = "idle" | "loading" | "success" | "error";
 export default function InquiryForm({
     propertyId,
     propertyTitle,
+    operation,
+    rentalPrices,
 }: InquiryFormProps) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -91,7 +100,7 @@ export default function InquiryForm({
                 onChange={(e) => setName(e.target.value)}
                 required
                 className={clsx(
-                    "w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm",
+                    "w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900",
                     "focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-400",
                     "placeholder:text-gray-400"
                 )}
@@ -103,7 +112,7 @@ export default function InquiryForm({
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className={clsx(
-                    "w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm",
+                    "w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900",
                     "focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-400",
                     "placeholder:text-gray-400"
                 )}
@@ -114,7 +123,7 @@ export default function InquiryForm({
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 className={clsx(
-                    "w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm",
+                    "w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900",
                     "focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-400",
                     "placeholder:text-gray-400"
                 )}
@@ -123,7 +132,6 @@ export default function InquiryForm({
                 <button
                     type="button"
                     onClick={() => {
-                        const type = "Consulta general";
                         setMessage(`Hola, me interesa la propiedad "${propertyTitle}". ¿Podrían brindarme más información?`);
                     }}
                     className={clsx(
@@ -151,6 +159,45 @@ export default function InquiryForm({
                 </button>
             </div>
 
+            {/* Rental Type Selection */}
+            {operation === "rent" && rentalPrices && (
+                <div className="space-y-1.5">
+                    <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1">
+                        Estadía preferida
+                    </label>
+                    <div className="grid grid-cols-2 gap-2">
+                        {Object.entries(rentalPrices).map(([key, value]) => {
+                            if (!value) return null;
+                            const label = key === "daily" ? "Día" :
+                                key === "weekly" ? "Semana" :
+                                    key === "monthly" ? "Mes" :
+                                        "Contrato";
+                            const periodLabel = key === "daily" ? "por día" :
+                                key === "weekly" ? "por semana" :
+                                    key === "monthly" ? "por mes" :
+                                        "de contrato largo";
+                            return (
+                                <button
+                                    key={key}
+                                    type="button"
+                                    onClick={() => {
+                                        setMessage(`Hola, me interesa el alquiler ${periodLabel} de la propiedad "${propertyTitle}". ¿Tienen disponibilidad?`);
+                                    }}
+                                    className={clsx(
+                                        "px-2 py-1.5 text-[10px] font-bold uppercase rounded-lg border transition-colors",
+                                        message.includes(periodLabel)
+                                            ? "bg-amber-50 border-amber-200 text-amber-700"
+                                            : "bg-white border-gray-100 text-gray-400 hover:bg-gray-50"
+                                    )}
+                                >
+                                    {label}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
+
             <textarea
                 placeholder="Mensaje *"
                 value={message}
@@ -158,7 +205,7 @@ export default function InquiryForm({
                 required
                 rows={4}
                 className={clsx(
-                    "w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm resize-none",
+                    "w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm resize-none text-gray-900",
                     "focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-400",
                     "placeholder:text-gray-400"
                 )}

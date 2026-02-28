@@ -28,6 +28,7 @@ export interface PropertyFilters {
     sortBy?: string;
     limit?: number;
     offset?: number;
+    rentalPeriod?: "daily" | "weekly" | "monthly" | "longTerm";
 }
 
 // ─── Queries ────────────────────────────────────────────────────
@@ -64,6 +65,9 @@ export async function getProperties(
     }
     if (filters.minBathrooms) {
         conditions.push(gte(properties.bathrooms, parseInt(filters.minBathrooms)));
+    }
+    if (filters.rentalPeriod) {
+        conditions.push(sql`${properties.rentalPrices} ?? ${filters.rentalPeriod}`);
     }
 
     const where = and(...conditions);

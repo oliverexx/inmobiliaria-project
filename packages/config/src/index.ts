@@ -37,6 +37,13 @@ export const OPERATION_LABELS: Record<string, string> = {
     rent: "Alquiler",
 };
 
+export const RENTAL_PERIOD_LABELS: Record<string, string> = {
+    daily: "por día",
+    weekly: "por semana",
+    monthly: "por mes",
+    longTerm: "contrato largo",
+};
+
 export const PROPERTY_TYPE_LABELS: Record<string, string> = {
     house: "Casa",
     apartment: "Departamento",

@@ -14,6 +14,7 @@ export default function Header() {
     const whatsappLink = getWhatsAppLink();
 
     const navLinks = [
+        { href: "/", label: "Inicio" },
         { href: "/propiedades?operation=sale", label: "Comprar" },
         { href: "/propiedades?operation=rent", label: "Alquilar" },
         { href: "/propiedades", label: "Propiedades" },

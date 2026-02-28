@@ -62,7 +62,7 @@ export default function HeroSearchBar() {
                         <select
                             value={city}
                             onChange={(e) => setCity(e.target.value)}
-                            className="w-full border border-gray-200 rounded-lg px-3 py-3 text-sm pl-9 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-400 appearance-none bg-white cursor-pointer"
+                            className="w-full border border-gray-200 rounded-lg px-3 py-3 text-sm pl-9 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-400 appearance-none bg-white cursor-pointer text-gray-900"
                         >
                             <option value="">Todas las ciudades</option>
                             {CITIES.map((c) => (
@@ -79,7 +79,7 @@ export default function HeroSearchBar() {
                         <select
                             value={propertyType}
                             onChange={(e) => setPropertyType(e.target.value)}
-                            className="w-full border border-gray-200 rounded-lg px-3 py-3 text-sm pl-9 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-400 appearance-none bg-white cursor-pointer"
+                            className="w-full border border-gray-200 rounded-lg px-3 py-3 text-sm pl-9 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-400 appearance-none bg-white cursor-pointer text-gray-900"
                         >
                             <option value="">Todos los tipos</option>
                             {Object.entries(PROPERTY_TYPE_LABELS).map(([value, label]) => (

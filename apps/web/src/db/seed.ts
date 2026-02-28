@@ -69,6 +69,13 @@ interface SeedProperty {
     tagNames: string[];
     isFeatured: boolean;
     description: string;
+    gpsLocation?: string;
+    rentalPrices?: {
+        daily?: number;
+        weekly?: number;
+        monthly?: number;
+        longTerm?: number;
+    };
 }
 
 const SEED_PROPERTIES: SeedProperty[] = [
@@ -96,6 +103,7 @@ const SEED_PROPERTIES: SeedProperty[] = [
         isFeatured: true,
         description:
             "Imponente chalet sobre lote de 600m² en la mejor zona de Palihue, con pileta climatizada y quincho.",
+        gpsLocation: "-38.7042,-62.2612",
     },
     {
         title: "Casa Reciclada en el Centro",
@@ -172,6 +180,7 @@ const SEED_PROPERTIES: SeedProperty[] = [
         isFeatured: false,
         description:
             "Casa moderna en barrio cerrado con vigilancia 24h, parrilla y jardín parquizado.",
+        gpsLocation: "-38.6515,-62.2855",
     },
     {
         title: "Oficina en Torre Fundaleu",
@@ -325,6 +334,11 @@ const SEED_PROPERTIES: SeedProperty[] = [
         isFeatured: false,
         description:
             "Monoambiente moderno a metros de la UNS y el campus universitario. Internet incluido.",
+        rentalPrices: {
+            daily: 25,
+            weekly: 150,
+            monthly: 450,
+        },
     },
     {
         title: "Oficina en Edificio Céntrico",
@@ -420,6 +434,11 @@ const SEED_PROPERTIES: SeedProperty[] = [
         isFeatured: false,
         description:
             "Departamento temporario totalmente equipado, ideal para profesionales de paso.",
+        rentalPrices: {
+            daily: 40,
+            weekly: 240,
+            monthly: 750,
+        },
     },
     {
         title: "Galpón en Zona Industrial",
@@ -458,6 +477,9 @@ const SEED_PROPERTIES: SeedProperty[] = [
         isFeatured: false,
         description:
             "Departamento luminoso con balcón al frente, excelente ubicación a cuadras de la plaza.",
+        rentalPrices: {
+            longTerm: 340000,
+        },
     },
     // ── MONTE HERMOSO (6) ──
     {
@@ -535,6 +557,11 @@ const SEED_PROPERTIES: SeedProperty[] = [
         isFeatured: false,
         description:
             "Departamento temporario totalmente equipado en pleno centro, a 2 cuadras del mar.",
+        rentalPrices: {
+            daily: 60,
+            weekly: 360,
+            monthly: 1200,
+        },
     },
     {
         title: "Casa para Alquiler Temporada",
@@ -707,6 +734,10 @@ async function seed() {
             phone: "(0291) 400-0000",
             company: "Calzada Inmobiliaria",
         })
+        .onConflictDoUpdate({
+            target: users.email,
+            set: { name: "Admin" }
+        })
         .returning();
 
     // 2. Create agent user
@@ -721,11 +752,15 @@ async function seed() {
             phone: "(0291) 400-0001",
             company: "Calzada Inmobiliaria",
         })
+        .onConflictDoUpdate({
+            target: users.email,
+            set: { name: "Agente Calzada" }
+        })
         .returning();
 
     // 3. Seed tags
     console.log("  → Seeding tags...");
-    const insertedTags = await db.insert(tags).values(SEED_TAGS).returning();
+    const insertedTags = await db.insert(tags).values(SEED_TAGS).onConflictDoNothing().returning();
     const tagMap = new Map(insertedTags.map((t) => [t.name, t.id]));
 
     // 4. Seed properties
@@ -753,7 +788,16 @@ async function seed() {
                 status: "published",
                 isFeatured: sp.isFeatured,
                 isAvailable: true,
+                gpsLocation: sp.gpsLocation || null,
+                rentalPrices: sp.rentalPrices || null,
                 publishedAt: new Date(),
+            })
+            .onConflictDoUpdate({
+                target: properties.slug,
+                set: {
+                    gpsLocation: sp.gpsLocation || null,
+                    rentalPrices: sp.rentalPrices || null,
+                }
             })
             .returning();
 
