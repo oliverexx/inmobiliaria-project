@@ -1,10 +1,12 @@
 import Link from "next/link";
-import Image from "next/image";
 import clsx from "clsx";
 import { Bed, Bath, Maximize, MapPin } from "lucide-react";
 import type { PropertyWithTags } from "@/lib/queries";
 import { formatPrice } from "@/lib/format";
 import { OPERATION_LABELS } from "@calzada/config";
+import FavoriteButton from "@/components/properties/FavoriteButton";
+import CardImageCarousel from "@/components/properties/CardImageCarousel";
+import CompareButton from "@/components/properties/CompareButton";
 
 interface PropertyCardProps {
     property: PropertyWithTags;
@@ -20,21 +22,15 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             href={`/propiedad/${property.slug}`}
             className="group block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
         >
-            {/* Image */}
+            {/* Image Carousel */}
             <div className="relative aspect-[4/3] overflow-hidden">
-                {property.featuredImage ? (
-                    <Image
-                        src={property.featuredImage}
-                        alt={property.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                ) : (
-                    <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
-                        Sin imagen
-                    </div>
-                )}
+                <CardImageCarousel
+                    images={[
+                        ...(property.featuredImage ? [property.featuredImage] : []),
+                        ...((property.gallery as string[]) ?? []),
+                    ]}
+                    title={property.title}
+                />
 
                 {/* Operation Badge */}
                 <span
@@ -50,10 +46,16 @@ export default function PropertyCard({ property }: PropertyCardProps) {
 
                 {/* Featured Badge */}
                 {property.isFeatured && (
-                    <span className="absolute top-3 right-3 px-2.5 py-1 bg-red-500 text-white text-xs font-semibold rounded-lg shadow-md">
+                    <span className="absolute top-3 right-14 px-2.5 py-1 bg-red-500 text-white text-xs font-semibold rounded-lg shadow-md z-[5]">
                         DESTACADA
                     </span>
                 )}
+
+                {/* Favorite Button */}
+                <FavoriteButton propertyId={property.id} />
+
+                {/* Compare Button */}
+                <CompareButton property={property} />
             </div>
 
             {/* Content */}

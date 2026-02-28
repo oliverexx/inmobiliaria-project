@@ -5,6 +5,7 @@ import Footer from "@/components/layout/Footer";
 import WhatsAppFloat from "@/components/layout/WhatsAppFloat";
 import PropertyCard from "@/components/properties/PropertyCard";
 import PropertyFilters from "@/components/properties/PropertyFilters";
+import Pagination from "@/components/properties/Pagination";
 import { getProperties } from "@/lib/queries";
 import { propertyCountText } from "@/lib/format";
 import { OPERATION_LABELS } from "@calzada/config";
@@ -40,6 +41,10 @@ export async function generateMetadata(
 }
 
 async function PropertyGrid({ searchParams }: { searchParams: Record<string, string> }) {
+    const PAGE_SIZE = 12;
+    const currentPage = Math.max(1, Number(searchParams.page ?? "1"));
+    const offset = (currentPage - 1) * PAGE_SIZE;
+
     let result;
     try {
         result = await getProperties({
@@ -50,6 +55,8 @@ async function PropertyGrid({ searchParams }: { searchParams: Record<string, str
             maxPrice: searchParams.maxPrice,
             search: searchParams.search,
             sortBy: searchParams.sortBy,
+            limit: PAGE_SIZE,
+            offset,
         });
     } catch {
         // Database not available
@@ -81,6 +88,7 @@ async function PropertyGrid({ searchParams }: { searchParams: Record<string, str
                     <PropertyCard key={property.id} property={property} />
                 ))}
             </div>
+            <Pagination total={total} pageSize={PAGE_SIZE} />
         </>
     );
 }

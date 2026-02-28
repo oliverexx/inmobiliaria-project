@@ -119,6 +119,38 @@ export default function InquiryForm({
                     "placeholder:text-gray-400"
                 )}
             />
+            <div className="grid grid-cols-2 gap-2">
+                <button
+                    type="button"
+                    onClick={() => {
+                        const type = "Consulta general";
+                        setMessage(`Hola, me interesa la propiedad "${propertyTitle}". ¿Podrían brindarme más información?`);
+                    }}
+                    className={clsx(
+                        "px-3 py-2 text-xs font-medium rounded-lg border transition-colors",
+                        !message.toLowerCase().includes("visita")
+                            ? "bg-amber-50 border-amber-200 text-amber-700"
+                            : "bg-white border-gray-100 text-gray-500 hover:bg-gray-50"
+                    )}
+                >
+                    Consulta
+                </button>
+                <button
+                    type="button"
+                    onClick={() => {
+                        setMessage(`Hola, me gustaría agendar una visita para ver la propiedad "${propertyTitle}". ¿Qué días tienen disponibilidad?`);
+                    }}
+                    className={clsx(
+                        "px-3 py-2 text-xs font-medium rounded-lg border transition-colors",
+                        message.toLowerCase().includes("visita")
+                            ? "bg-amber-50 border-amber-200 text-amber-700"
+                            : "bg-white border-gray-100 text-gray-500 hover:bg-gray-50"
+                    )}
+                >
+                    Agendar Visita
+                </button>
+            </div>
+
             <textarea
                 placeholder="Mensaje *"
                 value={message}

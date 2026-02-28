@@ -20,11 +20,16 @@ import WhatsAppFloat from "@/components/layout/WhatsAppFloat";
 import ImageGallery from "@/components/properties/ImageGallery";
 import InquiryForm from "@/components/properties/InquiryForm";
 import PropertyCard from "@/components/properties/PropertyCard";
+import FavoriteButton from "@/components/properties/FavoriteButton";
+import MortgageCalculator from "@/components/properties/MortgageCalculator";
+import PropertyMap from "@/components/properties/PropertyMap";
+import CompareButton from "@/components/properties/CompareButton";
 import {
     getPropertyBySlug,
     getRelatedProperties,
     incrementViews,
     getAllPropertySlugs,
+    type PropertyWithTags,
 } from "@/lib/queries";
 import { formatPrice } from "@/lib/format";
 import {
@@ -98,7 +103,7 @@ export default async function PropertyDetailPage({ params }: Props) {
     incrementViews(slug).catch(() => { });
 
     // Get related properties
-    let related;
+    let related: PropertyWithTags[];
     try {
         related = await getRelatedProperties(property.id, property.city);
     } catch {
@@ -261,6 +266,17 @@ export default async function PropertyDetailPage({ params }: Props) {
                                 </p>
                             </div>
 
+                            {/* Map */}
+                            {property.gpsLocation && (
+                                <div className="bg-white rounded-xl p-6 border border-gray-100">
+                                    <PropertyMap
+                                        location={property.gpsLocation}
+                                        title={property.title}
+                                        address={property.address}
+                                    />
+                                </div>
+                            )}
+
                             {/* Tags */}
                             {property.tags.length > 0 && (
                                 <div className="flex flex-wrap gap-2">
@@ -304,6 +320,18 @@ export default async function PropertyDetailPage({ params }: Props) {
                                 Consultar por WhatsApp
                             </a>
 
+                            {/* Favorite */}
+                            <FavoriteButton
+                                propertyId={property.id}
+                                variant="detail"
+                            />
+
+                            {/* Compare */}
+                            <CompareButton
+                                property={property}
+                                variant="detail"
+                            />
+
                             {/* Share */}
                             <button
                                 onClick={undefined}
@@ -320,6 +348,14 @@ export default async function PropertyDetailPage({ params }: Props) {
                                     propertyTitle={property.title}
                                 />
                             </div>
+
+                            {/* Mortgage Calculator — only for sales */}
+                            {property.operation === "sale" && (
+                                <MortgageCalculator
+                                    propertyPrice={Number(property.price)}
+                                    currency="USD"
+                                />
+                            )}
                         </aside>
                     </div>
 

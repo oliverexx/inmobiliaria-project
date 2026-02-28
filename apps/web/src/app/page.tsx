@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Home, Key, MapPin, Phone } from "lucide-react";
+import { ArrowRight, MapPin, Phone } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppFloat from "@/components/layout/WhatsAppFloat";
 import PropertyCard from "@/components/properties/PropertyCard";
+import HeroSearchBar from "@/components/home/HeroSearchBar";
+import TestimonialCarousel from "@/components/home/TestimonialCarousel";
 import { getFeaturedProperties } from "@/lib/queries";
 import {
     AGENCY_NAME,
@@ -75,23 +77,8 @@ export default async function HomePage() {
                         {AGENCY_DESCRIPTION}
                     </p>
 
-                    {/* CTA Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fadeInUp" style={{ animationDelay: "0.7s" }}>
-                        <Link
-                            href="/propiedades?operation=sale"
-                            className="flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-colors shadow-lg"
-                        >
-                            <Home className="w-5 h-5" />
-                            Comprar
-                        </Link>
-                        <Link
-                            href="/propiedades?operation=rent"
-                            className="flex items-center justify-center gap-2 bg-white/15 hover:bg-white/25 backdrop-blur text-white px-8 py-4 rounded-xl font-semibold text-lg transition-colors border border-white/30"
-                        >
-                            <Key className="w-5 h-5" />
-                            Alquilar
-                        </Link>
-                    </div>
+                    {/* Search Bar */}
+                    <HeroSearchBar />
                 </div>
             </section>
 
@@ -202,6 +189,9 @@ export default async function HomePage() {
                     </div>
                 </div>
             </section>
+
+            {/* ─── Testimonials ────────────────────────────────────────── */}
+            <TestimonialCarousel />
 
             {/* ─── CTA Section ──────────────────────────────────────────── */}
             <section className="bg-amber-500 py-16">

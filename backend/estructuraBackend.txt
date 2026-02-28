@@ -1,0 +1,35 @@
+backend/
+├── config/
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── wsgi.py
+│   └── asgi.py
+├── apps/
+│   ├── __init__.py
+│   ├── users/
+│   │   ├── __init__.py
+│   │   ├── models.py
+│   │   ├── serializers.py
+│   │   └── views.py
+│   ├── properties/
+│   │   ├── __init__.py
+│   │   ├── models.py
+│   │   ├── serializers.py
+│   │   ├── views.py
+│   │   └── tests/
+│   ├── categories/
+│   │   ├── __init__.py
+│   │   ├── models.py
+│   │   └── serializers.py
+│   └── inquiries/
+│       ├── __init__.py
+│       ├── models.py
+│       ├── serializers.py
+│       └── views.py
+├── media/
+├── static/
+├── manage.py
+├── requirements.txt
+├── .env
+└── pytest.ini

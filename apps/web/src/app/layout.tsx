@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import "./globals.css";
+import CompareFloatingBadge from "@/components/properties/CompareFloatingBadge";
 import {
     AGENCY_NAME,
     AGENCY_DESCRIPTION,
     SITE_URL,
 } from "@calzada/config";
-import "./globals.css";
 
 const inter = Inter({
     variable: "--font-inter",
@@ -86,6 +87,7 @@ export default function RootLayout({
             </head>
             <body className={`${inter.variable} font-sans antialiased`}>
                 {children}
+                <CompareFloatingBadge />
             </body>
         </html>
     );

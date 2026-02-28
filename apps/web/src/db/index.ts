@@ -21,6 +21,6 @@ export function getDb(): NodePgDatabase<typeof schema> {
 // For convenience — throws if DB is not configured
 export const db = new Proxy({} as NodePgDatabase<typeof schema>, {
     get(_, prop) {
-        return (getDb() as Record<string | symbol, unknown>)[prop];
+        return (getDb() as unknown as Record<string | symbol, unknown>)[prop];
     },
 });

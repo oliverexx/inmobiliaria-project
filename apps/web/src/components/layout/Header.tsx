@@ -6,6 +6,7 @@ import Image from "next/image";
 import clsx from "clsx";
 import { Menu, X, MessageCircle } from "lucide-react";
 import { getWhatsAppLink } from "@calzada/config";
+import FavoritesHeaderBadge from "@/components/layout/FavoritesHeaderBadge";
 
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -16,6 +17,7 @@ export default function Header() {
         { href: "/propiedades?operation=sale", label: "Comprar" },
         { href: "/propiedades?operation=rent", label: "Alquilar" },
         { href: "/propiedades", label: "Propiedades" },
+        { href: "/nosotros", label: "Nosotros" },
     ];
 
     return (
@@ -45,6 +47,9 @@ export default function Header() {
                                 {link.label}
                             </Link>
                         ))}
+
+                        {/* Favorites */}
+                        <FavoritesHeaderBadge />
 
                         {/* WhatsApp CTA */}
                         <a
